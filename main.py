@@ -4,20 +4,20 @@ from src.risk_model import apply_risk_scoring
 import matplotlib.pyplot as plt
 
 
-def plot_corridors(corridor_revenue):
-    corridor_revenue.head(5).plot(kind="bar")
-    plt.title("Top Revenue Corridors")
-    plt.ylabel("Revenue")
-    plt.tight_layout()
-    plt.show()
+def plot_dashboard(df, corridor_revenue):
+    fig, axes = plt.subplots(2, 1, figsize=(10, 8))
 
+    corridor_revenue.head(5).plot(kind="bar", ax=axes[0])
+    axes[0].set_title("Top Revenue Corridors")
+    axes[0].set_ylabel("Revenue")
+    axes[0].tick_params(axis="x", rotation=30)
 
-def plot_daily_revenue(df):
     daily = df.set_index("timestamp")["revenue"].resample("D").sum()
-    daily.plot()
-    plt.title("Daily Revenue Trend")
-    plt.ylabel("Revenue")
-    plt.xlabel("Date")
+    daily.plot(ax=axes[1])
+    axes[1].set_title("Daily Revenue Trend")
+    axes[1].set_ylabel("Revenue")
+    axes[1].set_xlabel("Date")
+
     plt.tight_layout()
     plt.show()
 
@@ -37,8 +37,7 @@ def main():
     print(metrics["corridor_revenue"].head())
 
     # PLOTS
-    plot_corridors(metrics["corridor_revenue"])
-    plot_daily_revenue(df)
+    plot_dashboard(df, metrics["corridor_revenue"])
 
 
 if __name__ == "__main__":
