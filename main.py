@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from src.simulation import generate_transactions
 from src.metrics import compute_metrics
 from src.risk_model import apply_risk_scoring
