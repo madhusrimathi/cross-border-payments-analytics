@@ -13,8 +13,16 @@ def plot_corridors(corridor_revenue):
     plt.xticks(rotation=30, ha="right")
     plt.tight_layout()
     plt.show()
-    
 
+def plot_daily_revenue(df): 
+    daily = df.set_index("timestamp")["revenue"].resample("D").sum()
+    daily.plot()
+    plt.title("Daily Revenue Trend")
+    plt.ylabel("Revenue")
+    plt.xlabel("Date")
+    plt.tight_layout()
+    plt.show()
+    
 
 def main():
     df = generate_transactions(1000)
@@ -30,6 +38,10 @@ def main():
     print(metrics["corridor_revenue"].head())
 
     plot_corridors(metrics["corridor_revenue"])
+    plot_daily_revenue(df)
+
+
+    
 
 
 if __name__ == "__main__":
