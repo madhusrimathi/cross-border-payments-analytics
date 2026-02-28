@@ -6,11 +6,14 @@ import matplotlib.pyplot as plt
 
 
 def plot_corridors(corridor_revenue):
-    corridor_revenue.head(5).plot(kind="bar")
-    plt.title("Top Revenue Corridors")
-    plt.ylabel("Revenue")
+    ax = corridor_revenue.head(5).plot(kind="bar")
+    ax.set_title("Top Revenue Corridors")
+    ax.set_ylabel("Revenue")
+    ax.set_xlabel("Corridor")
+    plt.xticks(rotation=30, ha="right")
     plt.tight_layout()
     plt.show()
+    
 
 
 def main():
