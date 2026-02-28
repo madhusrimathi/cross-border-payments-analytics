@@ -2,6 +2,17 @@ from src.simulation import generate_transactions
 from src.metrics import compute_metrics
 from src.risk_model import apply_risk_scoring
 
+import matplotlib.pyplot as plt
+
+
+def plot_corridors(corridor_revenue):
+    corridor_revenue.head(5).plot(kind="bar")
+    plt.title("Top Revenue Corridors")
+    plt.ylabel("Revenue")
+    plt.tight_layout()
+    plt.show()
+
+
 def main():
     df = generate_transactions(1000)
     df = apply_risk_scoring(df)
@@ -14,6 +25,9 @@ def main():
     print("Average Revenue per Transaction:", round(metrics["avg_revenue_per_txn"], 2))
     print("\nTop Revenue Corridors:")
     print(metrics["corridor_revenue"].head())
+
+    plot_corridors(metrics["corridor_revenue"])
+
 
 if __name__ == "__main__":
     main()
