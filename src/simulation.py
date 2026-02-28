@@ -14,5 +14,6 @@ def generate_transactions(n=1000):
 
     df = pd.DataFrame(data)
     df["revenue"] = df["amount"] * df["fx_spread_percent"] / 100
+    df["timestamp"] = pd.to_datetime("2024-01-01") + pd.to_timedelta(np.random.randint(0, 60*24*30, n), unit="m")
 
     return df
