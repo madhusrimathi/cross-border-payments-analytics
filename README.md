@@ -3,7 +3,7 @@
 This project simulates the data infrastructure of a cross-border payments company.  
 It generates synthetic transaction-level data and analyzes revenue drivers, FX spreads, corridor performance, and transaction risk exposure using Python and pandas.
 
-## 🚀 Project Objectives
+## Project Objectives
 
 - Simulate cross-border payment transaction flows
 - Compute Total Payment Volume (TPV)
@@ -12,7 +12,7 @@ It generates synthetic transaction-level data and analyzes revenue drivers, FX s
 - Implement basic transaction risk scoring
 - Model fintech unit economics
 
-## 📊 Key Metrics Modeled
+## Key Metrics Modeled
 
 - Total Payment Volume (TPV)
 - Average Ticket Size
@@ -21,7 +21,7 @@ It generates synthetic transaction-level data and analyzes revenue drivers, FX s
 - FX Spread Impact
 - Risk Flag Rate
 
-## 🧠 Tech Stack
+## Tech Stack
 
 - Python
 - pandas
@@ -43,7 +43,7 @@ cross-border-payments-analytics/
 └── requirements.txt 
 
 
-## 🎯 Why This Project
+## Why This Project
 
 Designed to model the core revenue and risk mechanics of cross-border payment platforms such as Thunes, Nium, and YouTrip.
 
