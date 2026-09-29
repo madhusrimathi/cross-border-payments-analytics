@@ -1,44 +1,46 @@
-import matplotlib.pyplot as plt
-from src.simulation import generate_transactions
+import argparse
+
 from src.metrics import compute_metrics
 from src.risk_model import apply_risk_scoring
-import matplotlib.pyplot as plt
+from src.simulation import generate_transactions
 
 
 def plot_dashboard(df, corridor_revenue):
-    fig, axes = plt.subplots(2, 1, figsize=(10, 8))
+    import matplotlib.pyplot as plt
 
+    fig, axes = plt.subplots(2, 1, figsize=(10, 8))
     corridor_revenue.head(5).plot(kind="bar", ax=axes[0])
-    axes[0].set_title("Top Revenue Corridors")
-    axes[0].set_ylabel("Revenue")
+    axes[0].set_title("Top FX Revenue Corridors (SGD)")
+    axes[0].set_ylabel("Illustrative FX revenue (SGD)")
     axes[0].tick_params(axis="x", rotation=30)
 
-    daily = df.set_index("timestamp")["revenue"].resample("D").sum()
+    daily = df.set_index("timestamp")["fx_revenue_sgd"].resample("D").sum()
     daily.plot(ax=axes[1])
-    axes[1].set_title("Daily Revenue Trend")
-    axes[1].set_ylabel("Revenue")
+    axes[1].set_title("Daily Illustrative FX Revenue")
+    axes[1].set_ylabel("SGD")
     axes[1].set_xlabel("Date")
-
-    plt.tight_layout()
+    fig.tight_layout()
     plt.show()
 
 
 def main():
-    df = generate_transactions(1000)
-    df = apply_risk_scoring(df)
-
+    parser = argparse.ArgumentParser(description="Synthetic cross-border payment analysis")
+    parser.add_argument("--transactions", type=int, default=1000)
+    parser.add_argument("--plot", action="store_true", help="Show matplotlib charts")
+    args = parser.parse_args()
+    df = apply_risk_scoring(generate_transactions(args.transactions))
     metrics = compute_metrics(df)
 
-    print("Total Payment Volume:", round(metrics["total_volume"], 2))
-    print("Total Revenue:", round(metrics["total_revenue"], 2))
-    print("Average Ticket Size:", round(metrics["avg_ticket_size"], 2))
-    print("Average Revenue per Transaction:", round(metrics["avg_revenue_per_txn"], 2))
+    print(f"Total payment volume (SGD): {metrics['total_volume_sgd']:,.2f}")
+    print(f"Illustrative FX revenue (SGD): {metrics['total_fx_revenue_sgd']:,.2f}")
+    print(f"Average ticket (SGD): {metrics['avg_ticket_sgd']:,.2f}")
+    print(f"Average FX revenue per transaction (SGD): {metrics['avg_fx_revenue_per_txn_sgd']:,.2f}")
+    print(f"Large payment flag rate: {metrics['large_payment_flag_rate']:.1%}")
+    print("\nTop FX revenue corridors (SGD):")
+    print(metrics["corridor_revenue_sgd"].head().to_string())
 
-    print("\nTop Revenue Corridors:")
-    print(metrics["corridor_revenue"].head())
-
-    # PLOTS
-    plot_dashboard(df, metrics["corridor_revenue"])
+    if args.plot and not df.empty:
+        plot_dashboard(df, metrics["corridor_revenue_sgd"])
 
 
 if __name__ == "__main__":
